@@ -7,6 +7,8 @@ local fishNameEnabled = menu.SwitchColor("Neverlose", "Fish Name ESP", false, Co
 local fishFlagEnabled = menu.SwitchColor("Neverlose", "Fish Flag ESP", false, Color.new(1.0, 1.0, 1.0, 1.0), "Turn on Fish Flag ESP");
 local chickenBoxEnabled = menu.SwitchColor("Neverlose", "Chicken Box ESP", false, Color.new(1.0, 1.0, 1.0, 1.0), "Turn on Chicken Box ESP");
 local chickenNameEnabled = menu.SwitchColor("Neverlose", "Chicken Name ESP", false, Color.new(1.0, 1.0, 1.0, 1.0), "Turn on Chicken Name ESP");
+local propBoxEnabled = menu.SwitchColor("Neverlose", "Prop Box ESP", false, Color.new(1.0, 1.0, 1.0, 1.0), "Turn on Prop Box ESP");
+local propNameEnabled = menu.SwitchColor("Neverlose", "Prop Name ESP", false, Color.new(1.0, 1.0, 1.0, 1.0), "Turn on Prop Name ESP");
 local drawDistance = menu.SliderInt("Neverlose", "Draw Distance", 0, 0, 2000, "0 (Unlimited) - 2,000 Meter Draw Distance")
 
 local function renderEntityBox(entity, name, nameControl, boxControl, sideHUD, flagControl)
@@ -66,9 +68,11 @@ cheat.RegisterCallback("draw", function()
         if (localPlayer and lp) then
             local fishEnts = cheat.GetEntitiesByName("CFish")
             local chickenEnts = cheat.GetEntitiesByName("CChicken")
+            local propEnts = cheat.GetEntitiesByName("CDynamicProp")
 
             for i = 1, #fishEnts do if (isInDistance(fishEnts[i], localPlayer, drawDistance)) then local lifeState = "Alive"; if (math.floor(fishEnts[i]:GetProp("DT_CFish", "m_lifeState")) == 2) then lifeState = "Dead"; end local table; if (fishFlagEnabled:GetBool()) then table = {math.floor(fishEnts[i]:GetProp("DT_CFish", "m_waterLevel")) .. "m", lifeState, math.floor(fishEnts[i]:GetProp("DT_CFish", "m_angle")) .. "°"}; end renderEntityBox(fishEnts[i], "Fish", fishNameEnabled, fishBoxEnabled, table, fishFlagEnabled); end end
             for i = 1, #chickenEnts do if (isInDistance(chickenEnts[i], localPlayer, drawDistance)) then renderEntityBox(chickenEnts[i], "Chicken", chickenNameEnabled, chickenBoxEnabled); end end
+            for i = 1, #propEnts do if (isInDistance(propEnts[i], localPlayer, drawDistance)) then renderEntityBox(propEnts[i], "Prop", propNameEnabled, propBoxEnabled); end end
         end
     end
 end);
